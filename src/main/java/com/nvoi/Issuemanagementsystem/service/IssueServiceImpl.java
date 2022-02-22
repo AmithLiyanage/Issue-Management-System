@@ -5,6 +5,8 @@ import com.nvoi.Issuemanagementsystem.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class IssueServiceImpl implements IssueService{
 
@@ -14,5 +16,10 @@ public class IssueServiceImpl implements IssueService{
     @Override
     public Issue saveIssue(Issue issue) {
         return issueRepository.save(issue);
+    }
+
+    @Override
+    public List<Issue> getAllIssues() {
+        return issueRepository.findAll();
     }
 }

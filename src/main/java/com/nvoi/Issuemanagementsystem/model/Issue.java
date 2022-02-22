@@ -15,6 +15,10 @@ import java.util.Locale;
 public class Issue {
 
     public enum IssueType {
+        BUG, QUESTION, IMPROVEMENT
+    }
+
+    public enum IssueState {
         OPEN, IN_PROGRESS, WAITING_ON_CLIENT, RESOLVED
     }
 
@@ -23,22 +27,14 @@ public class Issue {
     private int issueId;
     private String issueName;
     private String type;
+    private String state;
     private String description;
     private String createdTime;
     private String metaData;
 
-    public Issue(String issueName, String type) {
-        this.issueName = issueName;
-        this.type = type;
-        this.createdTime = ZonedDateTime.now(ZoneOffset.UTC).plusSeconds(5).format(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss", Locale.ENGLISH));
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(IssueType type) {
-        this.type = type.toString();
+    public Issue() {
+        this.createdTime = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss", Locale.ENGLISH));
+        this.state = IssueState.OPEN.name();
     }
 
     public int getIssueId() {
@@ -57,6 +53,21 @@ public class Issue {
         this.issueName = issueName;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(IssueType type) {
+        this.type = type.toString();
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
     public String getDescription() {
         return description;
     }
@@ -67,10 +78,6 @@ public class Issue {
 
     public String getCreatedTime() {
         return createdTime;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
     }
 
     public String getMetaData() {
