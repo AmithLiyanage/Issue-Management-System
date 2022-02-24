@@ -1,10 +1,8 @@
 package com.nvoi.Issuemanagementsystem.controller;
 
-import com.nvoi.Issuemanagementsystem.dto.EventMakeRequest;
 import com.nvoi.Issuemanagementsystem.model.Event;
 import com.nvoi.Issuemanagementsystem.model.Issue;
 import com.nvoi.Issuemanagementsystem.model.IssueState;
-import com.nvoi.Issuemanagementsystem.repository.EventRepository;
 import com.nvoi.Issuemanagementsystem.service.EventService;
 import com.nvoi.Issuemanagementsystem.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/issue")
+@CrossOrigin
 public class IssueController {
 
     @Autowired
@@ -37,7 +36,7 @@ public class IssueController {
         return "New Issue is added & event added";
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllIssues")
     public List<Issue> getAllIssues(){
         return issueService.getAllIssues();
     }

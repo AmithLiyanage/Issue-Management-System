@@ -10,8 +10,6 @@ import java.util.List;
 @Service
 public class EventServiceImpl implements EventService{
 
-    private Event event;
-
     @Autowired
     private EventRepository eventRepository;
 
@@ -20,16 +18,7 @@ public class EventServiceImpl implements EventService{
         return eventRepository.save(event);
     }
 
-    /*@Override
-    public List<Event> getAllEvents() {
-        return eventRepository.findAll();
-    }*/
-
     public List<Event> getEventsByIssueId(int issueId){
-
         return eventRepository.findAllByIssueId(issueId);
-/*        if (event.getIssueId() == issueId)
-            return event;
-        return null;*/
     }
 }
