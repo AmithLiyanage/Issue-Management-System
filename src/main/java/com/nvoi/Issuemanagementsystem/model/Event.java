@@ -9,8 +9,8 @@ public class Event {
 
     @Id//Primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)//auto increment & generated
-    private int eventId;
-    private int issueId;
+    private long eventId;
+    private long issueId;
     private ZonedDateTime eventTime;
     private String fromState;
     private String toState;
@@ -19,19 +19,19 @@ public class Event {
         this.eventTime = ZonedDateTime.now(ZoneOffset.UTC);//Eg: 2022-02-23T08:08:16.843809800Z
     }
 
-    public int getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
     }
 
-    public int getIssueId() {
+    public long getIssueId() {
         return issueId;
     }
 
-    public void setIssueId(int issueId) {
+    public void setIssueId(long issueId) {
         this.issueId = issueId;
     }
 

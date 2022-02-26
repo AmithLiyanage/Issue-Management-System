@@ -18,7 +18,7 @@ public class EventServiceImpl implements EventService{
         return eventRepository.save(event);
     }
 
-    public List<Event> getEventsByIssueId(int issueId){
+    public List<Event> getEventsByIssueId(long issueId){
         return eventRepository.findAllByIssueId(issueId);
     }
 }

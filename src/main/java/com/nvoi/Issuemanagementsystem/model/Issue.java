@@ -13,7 +13,7 @@ public class Issue {
 
     @Id//Primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)//auto increment & generated
-    private int issueId;
+    private long issueId;
     private String issueName;
     private String type;
     private String state;
@@ -28,11 +28,11 @@ public class Issue {
         this.state = IssueState.OPEN.name();
     }
 
-    public int getIssueId() {
+    public long getIssueId() {
         return issueId;
     }
 
-    public void setIssueId(int issueId) {
+    public void setIssueId(long issueId) {
         this.issueId = issueId;
     }
 

@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface IssueService {
     public Issue saveIssue(Issue issue);
     public List<Issue> getAllIssues();
-    public List<Issue> deleteByIssueId(int id);
+    public Issue deleteByIssueId(long id);
 }
 

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class IssueServiceImpl implements IssueService{
@@ -26,11 +25,9 @@ public class IssueServiceImpl implements IssueService{
     }
 
     @Override
-    public List<Issue> deleteByIssueId(int issueId) {
-        List<Issue> foundIssues = issueRepository.findAllByIssueId(issueId);
-        if (!foundIssues.isEmpty()) {
-            issueRepository.deleteById(issueId);
-        }
-        return foundIssues;
+    public Issue deleteByIssueId(long issueId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        issueRepository.deleteById(issueId);
+        return issue;
     }
 }
