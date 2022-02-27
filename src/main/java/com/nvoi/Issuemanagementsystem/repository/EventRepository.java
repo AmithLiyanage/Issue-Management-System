@@ -1,7 +1,6 @@
 package com.nvoi.Issuemanagementsystem.repository;
 
 import com.nvoi.Issuemanagementsystem.model.Event;
-import com.nvoi.Issuemanagementsystem.model.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

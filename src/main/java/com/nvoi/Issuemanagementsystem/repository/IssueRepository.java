@@ -35,5 +35,4 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Transactional
     void deleteById(Long issueId);
 
-
 }

@@ -1,7 +1,6 @@
 package com.nvoi.Issuemanagementsystem.service;
 
 import com.nvoi.Issuemanagementsystem.model.Issue;
-import com.nvoi.Issuemanagementsystem.model.IssueState;
 import com.nvoi.Issuemanagementsystem.repository.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
