@@ -9,7 +9,6 @@ import com.nvoi.Issuemanagementsystem.repository.IssueRepository;
 import com.nvoi.Issuemanagementsystem.service.EventService;
 import com.nvoi.Issuemanagementsystem.service.IssueService;
 import com.nvoi.Issuemanagementsystem.service.IssueServiceImpl;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,10 +53,45 @@ public class IssueController {
         return issueService.getAllIssues();
     }
 
-    @GetMapping("/getIssuesByStatus")
-    public List<State> getIssuesByStatus(){
-        return issueRepository.getIssuesByStatus();
+    @GetMapping("/getOpenIssues")
+    public List<Issue> getOpenIssues(){
+        return issueRepository.getOpenIssues();
     }
+
+    @GetMapping("/getInProgressIssues")
+    public List<Issue> getInProgressIssues(){
+        return issueRepository.getInProgressIssues();
+    }
+
+    @GetMapping("/getWaitingOnClientIssues")
+    public List<Issue> getWaitingOnClientIssues(){
+        return issueRepository.getWaitingOnClientIssues();
+    }
+
+    @GetMapping("/getResolvedIssues")
+    public List<Issue> getResolvedIssues(){
+        return issueRepository.getResolvedIssues();
+    }
+
+    @GetMapping("/getStatusOfIssues")
+    public List<State> getStatusOfIssues(){
+//        List<Object> name= new ArrayList<>();
+//        List<Object> values= new ArrayList<>();
+//        List<State> st = issueRepository.getStatusOfIssues();
+//
+//        for (Object o: st) {
+//            System.out.println("st.get(0)"+st.get(0));
+//            name.add(st.get(0));
+//            values.add(st.get(1));
+//        }
+//
+//        JSONObject jb = new JSONObject();
+//        jb.put("values", values);
+//        jb.put("labels", name);
+//        jb.put(" type",  "pie");
+        return issueRepository.getStatusOfIssues();
+    }
+
 
     @PatchMapping("/updateIssue/{issueId}")
     public ResponseEntity<Issue> updateIssue(@PathVariable Long issueId, @RequestBody Issue issue) {
