@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-    List<Event> findAllByIssueId(long issueId);
+    @Query(value = "SELECT * FROM event WHERE issue_id = ? ORDER BY event_time DESC limit 1;", nativeQuery = true)
+    Event getLastEventBIssueId(Long issueId);
 
-    @Query(value = "SELECT * FROM event WHERE issue_id = 7 ORDER BY event_time DESC limit 1;", nativeQuery = true)
-    Event getLastEventBIssueId(long issueId);
+    @Query(value = "SELECT * FROM event WHERE issue_id = ?", nativeQuery = true)
+    List<Event> findAllByIssueId(Long issueId);
 
 }

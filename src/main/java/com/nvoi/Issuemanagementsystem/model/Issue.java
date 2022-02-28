@@ -19,10 +19,8 @@ public class Issue {
     private String state;
     private String description;
 
-    @OneToMany(targetEntity = Event.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "issueId", referencedColumnName = "issueId")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Event> events;
-
 
     public Issue() {
         this.state = IssueState.OPEN.name();

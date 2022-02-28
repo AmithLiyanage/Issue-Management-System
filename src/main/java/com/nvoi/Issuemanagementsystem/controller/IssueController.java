@@ -5,10 +5,7 @@ import com.nvoi.Issuemanagementsystem.model.Issue;
 import com.nvoi.Issuemanagementsystem.model.IssueState;
 import com.nvoi.Issuemanagementsystem.model.State;
 import com.nvoi.Issuemanagementsystem.repository.EventRepository;
-import com.nvoi.Issuemanagementsystem.repository.IssueRepository;
-import com.nvoi.Issuemanagementsystem.service.EventService;
-import com.nvoi.Issuemanagementsystem.service.IssueService;
-import com.nvoi.Issuemanagementsystem.service.IssueServiceImpl;
+import com.nvoi.Issuemanagementsystem.repository.IssueRepository;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,32 +22,29 @@ import java.util.NoSuchElementException;
 public class IssueController {
 
     @Autowired
-    private IssueService issueService;
-    @Autowired
     private IssueRepository issueRepository;
-    @Autowired
-    private IssueServiceImpl issueServiceImpl;
-    @Autowired
-    private EventService eventService;
     @Autowired
     private EventRepository eventRepository;
 
-    //issue table
+    //issue add
     @PostMapping("/add")
     public String add(@RequestBody Issue issue) {
-        issueService.saveIssue(issue);
+        issueRepository.save(issue);
 
         Event event = new Event();
-        event.setIssueId(issue.getIssueId());
+        event.setIssue(issue);
         event.setToState(IssueState.OPEN.toString());
-        eventService.saveEvent(event);
+        eventRepository.save(event);
+        //System.out.println("issue id"+issue.getIssueId());
+        //System.out.println("event id"+event.getEventId());
 
         return "New Issue is added & event added";
     }
 
+    //for pie chart click
     @GetMapping("/getAllIssues")
     public List<Issue> getAllIssues() {
-        return issueService.getAllIssues();
+        return issueRepository.findAll();
     }
 
     @GetMapping("/getOpenIssues")
@@ -73,14 +67,16 @@ public class IssueController {
         return issueRepository.getResolvedIssues();
     }
 
+    //for pie chart
     @GetMapping("/getStatusOfIssues")
     public ResponseEntity<HashMap<String, Object>> getStatusOfIssues() {
         try {
             HashMap<String, Object> customStatusOfIssues = new HashMap<>();
             List<State> states = issueRepository.getStatusOfIssues();
+
+            //format response as what need format to frontend
             List<Object> values = new ArrayList<>();
             List<Object> labels = new ArrayList<>();
-
             for (int i=0; i<states.size(); i++){
                 State singleState = states.get(i);
                 values.add(singleState.getCount());
@@ -96,11 +92,12 @@ public class IssueController {
         }
     }
 
+    //issue load before update
     @GetMapping("/getIssueForUpdate/{issueId}")
     public ResponseEntity<HashMap<String, Object>> getIssueForUpdate(@PathVariable Long issueId) {
         try {
             HashMap<String, Object> customIssue = new HashMap<>();
-            Issue issue = issueRepository.findById(issueId).orElseThrow(RuntimeException::new);
+            Issue issue = issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new);
             customIssue.put("issue", issue);
 
             List<Object> nextAvailableStatus = new ArrayList<>();
@@ -111,7 +108,6 @@ public class IssueController {
                 case "IN_PROGRESS":
                     nextAvailableStatus.add(IssueState.WAITING_ON_CLIENT);
                     nextAvailableStatus.add(IssueState.RESOLVED);
-                    break;
                 case "WAITING_ON_CLIENT":
                     nextAvailableStatus.add(IssueState.IN_PROGRESS);
                     nextAvailableStatus.add(IssueState.RESOLVED);
@@ -128,37 +124,37 @@ public class IssueController {
         }
     }
 
+    //issue update
     @PatchMapping("/updateIssue/{issueId}")
     public ResponseEntity<Issue> updateIssue(@PathVariable Long issueId, @RequestBody Issue issue) {
-        Issue currentIssue = issueRepository.findById(issueId).orElseThrow(RuntimeException::new);
+        Issue currentIssue = issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new);
         currentIssue.setIssueName(issue.getIssueName());
         currentIssue.setState(issue.getState());
         issueRepository.save(currentIssue);
 
         Event event = new Event();
         Event lastEvent = eventRepository.getLastEventBIssueId(issueId);//for get last event
-        //System.out.println("Issue : "+ lastEvent.getIssueId());
-        event.setIssueId(lastEvent.getIssueId());
+        event.setIssue(lastEvent.getIssue());
         event.setFromState(lastEvent.getToState());
         event.setToState(currentIssue.getState());
-        eventService.saveEvent(event);
-
+        eventRepository.save(event);
 
         return ResponseEntity.ok(currentIssue);
     }
 
+    //issue delete
     @DeleteMapping("/deleteIssue/{issueId}")
     public ResponseEntity<Issue> deleteClient(@PathVariable Long issueId) {
         System.out.println("issueId = " + issueId);
-        Issue issue = issueService.deleteByIssueId(issueId);
-        return ResponseEntity.ok().body(issue);
+        issueRepository.deleteById(issueId);
+        return ResponseEntity.ok().build();
     }
 
-
-    @GetMapping("/getEvents/{issueId}")
+    //get event
+    @GetMapping("/getEventsByIssue/{issueId}")
     public ResponseEntity<List<Event>> get(@PathVariable Long issueId) {
         try {
-            List<Event> event = eventService.getEventsByIssueId(issueId);
+            List<Event> event = eventRepository.findAllByIssueId(issueId);
             return new ResponseEntity<>(event, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

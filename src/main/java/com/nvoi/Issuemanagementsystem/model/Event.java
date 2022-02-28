@@ -10,7 +10,11 @@ public class Event {
     @Id//Primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)//auto increment & generated
     private long eventId;
-    private long issueId;
+
+    @ManyToOne()
+    @JoinColumn(name = "issue_id")
+    private Issue issue;
+
     private ZonedDateTime eventTime;
     private String fromState;
     private String toState;
@@ -27,12 +31,12 @@ public class Event {
         this.eventId = eventId;
     }
 
-    public long getIssueId() {
-        return issueId;
+    public Issue getIssue() {
+        return issue;
     }
 
-    public void setIssueId(long issueId) {
-        this.issueId = issueId;
+    public void setIssue(Issue issue) {
+        this.issue = issue;
     }
 
     public ZonedDateTime getEventTime() {
