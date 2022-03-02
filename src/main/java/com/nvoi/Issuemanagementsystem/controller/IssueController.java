@@ -26,6 +26,16 @@ public class IssueController {
     @Autowired
     private EventRepository eventRepository;
 
+//    @GetMapping("/")
+//    public String helloWorld(){
+//        return "Hello World!!";
+//    }
+//
+//    @GetMapping("/restricted")
+//    public String restricted(){
+//        return "to see this text you  need to be logged in!";
+//    }
+
     //issue add
     @PostMapping("/add")
     public String add(@RequestBody Issue issue) {
