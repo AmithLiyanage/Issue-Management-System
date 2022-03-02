@@ -17,6 +17,8 @@ public class Issue {
     private String issueName;
     private String type;
     private String state;
+    private String submittedBy;
+    private String[] assignees;
     private String description;
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -57,6 +59,23 @@ public class Issue {
     public void setState(String state) {
         this.state = state;
     }
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
+    public String[] getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(String[] assignees) {
+        this.assignees = assignees;
+    }
+
     public String getDescription() {
         return description;
     }

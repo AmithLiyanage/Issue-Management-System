@@ -1,5 +1,6 @@
 package com.nvoi.Issuemanagementsystem.repository;
 
+import com.nvoi.Issuemanagementsystem.model.Event;
 import com.nvoi.Issuemanagementsystem.model.Issue;
 import com.nvoi.Issuemanagementsystem.model.State;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,9 @@ import java.util.List;
 public interface IssueRepository extends JpaRepository<Issue, Long> {
 
     //Issues by Status type
+    @Query(value = "SELECT * FROM issue ORDER BY issue_id DESC LIMIT 1", nativeQuery = true)
+    Issue getNextIssue();
+
     @Query(value = "SELECT * FROM issue WHERE state='OPEN'", nativeQuery = true)
     List<Issue> getOpenIssues();
 

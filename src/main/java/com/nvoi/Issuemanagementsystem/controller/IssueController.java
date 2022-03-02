@@ -37,6 +37,12 @@ public class IssueController {
 //    }
 
     //issue add
+    @GetMapping("/getNextIssueId")
+    public Long getNextIssueId() {
+        Issue lastIssue = issueRepository.getNextIssue();
+        return lastIssue.getIssueId()+1;
+    }
+
     @PostMapping("/add")
     public String add(@RequestBody Issue issue) {
         issueRepository.save(issue);
