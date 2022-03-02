@@ -60,7 +60,8 @@ public class IssueController {
     //for pie chart click
     @GetMapping("/getAllIssues")
     public List<Issue> getAllIssues() {
-        return issueRepository.findAll();
+//        return issueRepository.findAll();
+        return issueRepository.getAllIssues();
     }
 
     @GetMapping("/getOpenIssues")

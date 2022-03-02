@@ -17,6 +17,9 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query(value = "SELECT * FROM issue ORDER BY issue_id DESC LIMIT 1", nativeQuery = true)
     Issue getNextIssue();
 
+    @Query(value = "SELECT * FROM issue ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getAllIssues();
+
     @Query(value = "SELECT * FROM issue WHERE state='OPEN'", nativeQuery = true)
     List<Issue> getOpenIssues();
 
