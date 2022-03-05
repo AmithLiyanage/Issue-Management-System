@@ -13,27 +13,27 @@ import java.util.List;
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Long> {
 
-    //Issues by Status type
+    //Next Issue ID for UI
     @Query(value = "SELECT * FROM issue ORDER BY issue_id DESC LIMIT 1", nativeQuery = true)
     Issue getNextIssue();
 
-    @Query(value = "SELECT * FROM issue ORDER BY issue_id DESC", nativeQuery = true)
-    List<Issue> getAllIssues();
-
-    @Query(value = "SELECT * FROM issue WHERE state='OPEN'", nativeQuery = true)
-    List<Issue> getOpenIssues();
-
-    @Query(value = "SELECT * FROM issue WHERE state='IN_PROGRESS'", nativeQuery = true)
-    List<Issue> getInProgressIssues();
-
-    @Query(value = "SELECT * FROM issue WHERE state='WAITING_ON_CLIENT'", nativeQuery = true)
-    List<Issue> getWaitingOnClientIssues();
-
-    @Query(value = "SELECT * FROM issue WHERE state='RESOLVED'", nativeQuery = true)
-    List<Issue> getResolvedIssues();
-
     //Status table for pie chart
-    @Query(value = "SELECT state as name, COUNT(state) as count FROM issue GROUP BY state", nativeQuery = true)
-    List<State> getStatusOfIssues();
+    @Query(value = "SELECT state as name, COUNT(state) as count FROM issue WHERE submitted_by=? GROUP BY state", nativeQuery = true)
+    List<State> getStatusOfIssues(String submittedBy);
 
+    //Issues list
+    @Query(value = "SELECT * FROM issue WHERE submitted_by=? ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getAllIssues(String submittedBy);
+
+    @Query(value = "SELECT * FROM issue WHERE state='OPEN' AND submitted_by=? ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getOpenIssues(String submittedBy);
+
+    @Query(value = "SELECT * FROM issue WHERE state='IN_PROGRESS' AND submitted_by=? ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getInProgressIssues(String submittedBy);
+
+    @Query(value = "SELECT * FROM issue WHERE state='WAITING_ON_CLIENT' AND submitted_by=? ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getWaitingOnClientIssues(String submittedBy);
+
+    @Query(value = "SELECT * FROM issue WHERE state='RESOLVED' AND submitted_by=? ORDER BY issue_id DESC", nativeQuery = true)
+    List<Issue> getResolvedIssues(String submittedBy);
 }

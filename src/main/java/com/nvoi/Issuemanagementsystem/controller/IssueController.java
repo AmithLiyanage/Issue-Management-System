@@ -51,45 +51,42 @@ public class IssueController {
         event.setIssue(issue);
         event.setToState(IssueState.OPEN.toString());
         eventRepository.save(event);
-        //System.out.println("issue id"+issue.getIssueId());
-        //System.out.println("event id"+event.getEventId());
 
         return "New Issue is added & event added";
     }
 
     //for pie chart click
     @GetMapping("/getAllIssues")
-    public List<Issue> getAllIssues() {
-//        return issueRepository.findAll();
-        return issueRepository.getAllIssues();
+    public List<Issue> getAllIssues(@RequestParam String submittedBy) {
+        return issueRepository.getAllIssues(submittedBy);
     }
 
     @GetMapping("/getOpenIssues")
-    public List<Issue> getOpenIssues() {
-        return issueRepository.getOpenIssues();
+    public List<Issue> getOpenIssues(@RequestParam String submittedBy) {
+        return issueRepository.getOpenIssues(submittedBy);
     }
 
     @GetMapping("/getInProgressIssues")
-    public List<Issue> getInProgressIssues() {
-        return issueRepository.getInProgressIssues();
+    public List<Issue> getInProgressIssues(@RequestParam String submittedBy) {
+        return issueRepository.getInProgressIssues(submittedBy);
     }
 
     @GetMapping("/getWaitingOnClientIssues")
-    public List<Issue> getWaitingOnClientIssues() {
-        return issueRepository.getWaitingOnClientIssues();
+    public List<Issue> getWaitingOnClientIssues(@RequestParam String submittedBy) {
+        return issueRepository.getWaitingOnClientIssues(submittedBy);
     }
 
     @GetMapping("/getResolvedIssues")
-    public List<Issue> getResolvedIssues() {
-        return issueRepository.getResolvedIssues();
+    public List<Issue> getResolvedIssues(@RequestParam String submittedBy) {
+        return issueRepository.getResolvedIssues(submittedBy);
     }
 
     //for pie chart
     @GetMapping("/getStatusOfIssues")
-    public ResponseEntity<HashMap<String, Object>> getStatusOfIssues() {
+    public ResponseEntity<HashMap<String, Object>> getStatusOfIssues(@RequestParam String submittedBy) {
         try {
             HashMap<String, Object> customStatusOfIssues = new HashMap<>();
-            List<State> states = issueRepository.getStatusOfIssues();
+            List<State> states = issueRepository.getStatusOfIssues(submittedBy);
 
             //format response as what need format to frontend
             List<Object> values = new ArrayList<>();
@@ -101,7 +98,7 @@ public class IssueController {
             }
             customStatusOfIssues.put("values", values);
             customStatusOfIssues.put("labels", labels);
-            customStatusOfIssues.put("type", "pie");//nee this for pie chart (as chaert type)
+            customStatusOfIssues.put("type", "pie");//nee this for pie chart (as chart type)
 
             return new ResponseEntity<>(customStatusOfIssues, HttpStatus.OK);
         } catch (NoSuchElementException e) {
@@ -125,6 +122,7 @@ public class IssueController {
                 case "IN_PROGRESS":
                     nextAvailableStatus.add(IssueState.WAITING_ON_CLIENT);
                     nextAvailableStatus.add(IssueState.RESOLVED);
+                    break;
                 case "WAITING_ON_CLIENT":
                     nextAvailableStatus.add(IssueState.IN_PROGRESS);
                     nextAvailableStatus.add(IssueState.RESOLVED);
