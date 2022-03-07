@@ -44,7 +44,7 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public String add(@RequestBody Issue issue) {
+    public ResponseEntity<Issue> add(@RequestBody Issue issue) {
         issueRepository.save(issue);
 
         Event event = new Event();
@@ -52,7 +52,8 @@ public class IssueController {
         event.setToState(IssueState.OPEN.toString());
         eventRepository.save(event);
 
-        return "New Issue is added & event added";
+//        return "New Issue is added & event added";
+        return ResponseEntity.ok(issue);
     }
 
     //for pie chart click
@@ -144,6 +145,7 @@ public class IssueController {
     public ResponseEntity<Issue> updateIssue(@PathVariable Long issueId, @RequestBody Issue issue) {
         Issue currentIssue = issueRepository.findById(issueId).orElseThrow(NoSuchElementException::new);
         currentIssue.setIssueName(issue.getIssueName());
+        currentIssue.setDescription(issue.getDescription());
         currentIssue.setState(issue.getState());
         issueRepository.save(currentIssue);
 
